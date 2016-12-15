@@ -1,0 +1,51 @@
+:root {
+  --size: 250px;
+  --back: black;
+}
+
+* {
+  background-color: grey;
+}
+
+#main {
+  background-color: black;
+  height: var(--size);
+  width: var(--size);
+  border-radius: 10px;
+  margin: auto;
+  margin-top: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  transform: rotate(45deg);
+}
+
+#main > * {
+  width: 105px;
+  height: 105px;
+  margin: 10px;
+}
+
+#green {
+  background: -moz-linear-gradient(-45deg, green 0%, green 65%, var(--back) 65%, var(--back) 100%);
+  background: -webkit-linear-gradient(-45deg, green 0%,green 65%,var(--back) 65%,var(--back) 100%);
+  background: linear-gradient(135deg, green 0%,green 65%,var(--back) 65%,var(--back) 100%);
+}
+
+#red {
+  background: -moz-linear-gradient(45deg, red 0%, red 65%, var(--back) 65%, var(--back) 100%);
+  background: -webkit-linear-gradient(45deg, red 0%,red 65%,var(--back) 65%,var(--back) 100%);
+  background: linear-gradient(-135deg, red 0%,red 65%,var(--back) 65%,var(--back) 100%);
+}
+
+#blue {
+  background: -moz-linear-gradient(-45deg, blue 0%, blue 65%, var(--back) 65%, var(--back) 100%);
+  background: -webkit-linear-gradient(-45deg, blue 0%,blue 65%,var(--back) 65%,var(--back) 100%);
+  background: linear-gradient(45deg, blue 0%,blue 65%,var(--back) 65%,var(--back) 100%);
+}
+
+#yellow {
+  background: -moz-linear-gradient(135deg, yellow 0%, yellow 65%, var(--back) 65%, var(--back) 100%);
+  background: -webkit-linear-gradient(135deg, yellow 0%,yellow 65%,var(--back) 65%,var(--back) 100%);
+  background: linear-gradient(-45deg, yellow 0%,yellow 65%,var(--back) 65%,var(--back) 100%);
+}
