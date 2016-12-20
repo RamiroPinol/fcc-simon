@@ -1,5 +1,5 @@
 let Simon = function() {
-
+  this.index = 0
   // sequence of colors
   // 1: green, 2: red, 3: yellow, 4: blue
   this.arrayGame = []
@@ -7,11 +7,6 @@ let Simon = function() {
   // Push a random number [1,5) to sequence
   this.gameMove = function() {
     this.arrayGame.push(Math.floor(Math.random() * (5 - 1) + 1))
-  }
-
-  // Player's move
-  this.playerMove = function(color) {
-    this.arrayPlayer.push(color)
   }
 
   // "iluminates" simon piece by changing color during time and returning to original
@@ -31,6 +26,7 @@ let Simon = function() {
     const timeout = setTimeout(setColor, time)
   }
 
+  // Plays the sequence using lightColor(). Recursive function with timeout
   this.playSequence = function(i) {
     setTimeout( () => {
       this.lightColor(this.arrayGame[i], 1000)
@@ -40,21 +36,62 @@ let Simon = function() {
     }, 1500);
   }
 
+  // Game turn function. Add a movement to sequence and play it
   this.gameTurn = function() {
     this.gameMove()
     this.playSequence(0)
   }
+
+  // Player's move
+  this.playerMove = function(color) {
+    if (color == this.arrayGame[this.index] &&
+    this.index + 1 < this.arrayGame.length) {
+      this.index++
+      this.lightColor(color, 1000)
+      return ("coincidence, keep guessing")
+
+    } else if (color == this.arrayGame[this.index] &&
+      this.index + 1 == this.arrayGame.length) {
+        this.index = 0
+        this.lightColor(color, 1000)
+        console.log("Correct sequence, gameTurn() should be called")
+        this.gameTurn()
+        return
+
+    } else {
+      this.index = 0
+      return console.log("no coincidence, game over. game should restart")
+    }
+  }
+
+
+
 }
-/*
+
 var simon = new Simon()
-simon.gameMove()
-simon.gameMove()
-simon.gameMove()
-*/
+simon.gameTurn()
+
 const options = document.querySelectorAll("#main div")
 
 function test(e) {
-  console.log(e.target.attributes["data-color"].value)
+  simon.playerMove(e.target.attributes["data-color"].value)
 }
 
 options.forEach(option => option.addEventListener("click", test))
+
+/*
+const arr = [1, 3, 4, 2, 2]
+let i = 0
+function test(color) {
+  if (color == arr[i] && i + 1 < arr.length) {
+    i++
+    return console.log("coincidence", arr.length - i, "items left")
+  } else if (color == arr[i] && i + 1 == arr.length) {
+    i = 0
+    return console.log("coincidence last item")
+  } else {
+    i = 0
+    return console.log("no coincidence")
+  }
+}
+*/
