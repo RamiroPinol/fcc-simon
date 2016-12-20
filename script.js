@@ -28,13 +28,26 @@ let Simon = function() {
 
   // Plays the sequence using lightColor(). Recursive function with timeout
   this.playSequence = function(i) {
+    let ligTime = 1000
+    let timTime = 1500
+
+    if (this.arrayGame.length > 20) {
+      ligTime = 500
+      timTime = 750
+
+    } else if  (this.arrayGame.length > 10) {
+      ligTime = 700
+      timTime = 1000
+    }
+
     setTimeout( () => {
-      this.lightColor(this.arrayGame[i], 1000)
+      this.lightColor(this.arrayGame[i], ligTime)
       if (++i < this.arrayGame.length) {          // If i > 0, keep going
         this.playSequence(i);       // Call the loop again, and pass it the current value of i
       }
-    }, 1500);
+    }, timTime);
   }
+
 
   // Game turn function. Add a movement to sequence and play it
   this.gameTurn = function() {
@@ -42,18 +55,18 @@ let Simon = function() {
     this.playSequence(0)
   }
 
-  // Player's move
-  this.playerMove = function(color) {
+  // Player's turn
+  this.playerTurn = function(color) {
     if (color == this.arrayGame[this.index] &&
     this.index + 1 < this.arrayGame.length) {
       this.index++
-      this.lightColor(color, 1000)
+      this.lightColor(color, 500)
       return ("coincidence, keep guessing")
 
     } else if (color == this.arrayGame[this.index] &&
       this.index + 1 == this.arrayGame.length) {
         this.index = 0
-        this.lightColor(color, 1000)
+        this.lightColor(color, 500)
         console.log("Correct sequence, gameTurn() should be called")
         this.gameTurn()
         return
@@ -73,25 +86,14 @@ simon.gameTurn()
 
 const options = document.querySelectorAll("#main div")
 
-function test(e) {
-  simon.playerMove(e.target.attributes["data-color"].value)
+function play(e) {
+  simon.playerTurn(e.target.attributes["data-color"].value)
 }
 
-options.forEach(option => option.addEventListener("click", test))
+options.forEach(option => option.addEventListener("click", play))
 
 /*
-const arr = [1, 3, 4, 2, 2]
-let i = 0
-function test(color) {
-  if (color == arr[i] && i + 1 < arr.length) {
-    i++
-    return console.log("coincidence", arr.length - i, "items left")
-  } else if (color == arr[i] && i + 1 == arr.length) {
-    i = 0
-    return console.log("coincidence last item")
-  } else {
-    i = 0
-    return console.log("no coincidence")
-  }
-}
+TO DO:
+* avoid play function or options.eventListener and playSequence() run simultaneously
+
 */
