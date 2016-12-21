@@ -87,7 +87,10 @@ simon.gameTurn()
 const options = document.querySelectorAll("#main div")
 
 function play(e) {
-  simon.playerTurn(e.target.attributes["data-color"].value)
+  const id = e.target.attributes["data-color"].value
+  const audio = document.querySelector(`#sound${id}`)
+  simon.playerTurn(id)
+  audio.play();
 }
 
 options.forEach(option => option.addEventListener("click", play))
