@@ -5,6 +5,8 @@ let Simon = function() {
   // 1: green, 2: red, 3: yellow, 4: blue
   let arrayGame = []
 
+  this.strict = false
+
   this.showCount = function() {
     return arrayGame.length;
   }
@@ -62,25 +64,32 @@ let Simon = function() {
     this.playSequence(0)
   }
 
+  function restart() {
+    arrayGame = []
+    index = 0
+    console.log("Missmatch! GAME OVER. Restarting game...");
+  }
+
   // Player's turn
   this.playerTurn = function(color) {
     if (color == arrayGame[index] &&
     index + 1 < arrayGame.length) {
       index++
       lightColor(color, 500)
-      return ("coincidence, keep guessing")
+      console.log("coincidence, keep guessing")
+      return
 
     } else if (color == arrayGame[index] &&
       index + 1 == arrayGame.length) {
         index = 0
         lightColor(color, 500)
-        console.log("Correct sequence, gameTurn() should be called")
+        console.log("Correct sequence!")
         this.gameTurn()
         return
 
     } else {
-      index = 0
-      return console.log("no coincidence, game over. game should restart")
+      // If not match, restart game if in strict mode or play sequence again if not
+      this.strict ? restart() : this.playSequence(0)
     }
   }
 
@@ -98,7 +107,7 @@ var simon = new Simon()
 const options = document.querySelectorAll("#main div")
 const countDiv = document.querySelector("#count")
 const startBtn = document.querySelector("button")
-
+const strictMode = document.querySelector("input")
 
 function start() {
   simon.gameTurn()
@@ -109,8 +118,13 @@ function play(e) {
   simon.playSound(e)
 }
 
+function strict() {
+  this.checked ? simon.strict = true : simon.strict = false
+}
+
 options.forEach(option => option.addEventListener("click", play))
 startBtn.addEventListener("click", start)
+strictMode.addEventListener("click", strict)
 
 /*
 TO DO:
