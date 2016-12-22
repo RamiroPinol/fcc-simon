@@ -34,6 +34,24 @@ body {
   margin: auto;
 }
 
+#buttons {
+  display: flex;
+  align-items: center;
+  align-content: space-around;
+
+}
+
+#count {
+  background-color: grey;
+  height: 60px;
+}
+
+button,
+input {
+  width: 50px;
+  height: 30px;
+}
+
 #green {
   background-color: #3e593e;
 }

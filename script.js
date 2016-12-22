@@ -1,16 +1,21 @@
 let Simon = function() {
-  this.index = 0
+
+  let index = 0
   // sequence of colors
   // 1: green, 2: red, 3: yellow, 4: blue
-  this.arrayGame = []
+  let arrayGame = []
+
+  this.showCount = function() {
+    return arrayGame.length;
+  }
 
   // Push a random number [1,5) to sequence
-  this.gameMove = function() {
-    this.arrayGame.push(Math.floor(Math.random() * (5 - 1) + 1))
+  function gameMove() {
+    arrayGame.push(Math.floor(Math.random() * (5 - 1) + 1))
   }
 
   // "iluminates" simon piece by changing color during time and returning to original
-  this.lightColor = function(color, time) {
+  function lightColor(color, time) {
     const colors = ["#29a529", "#a52929", "#a5a529", "#5656d8"]
     const item = document.querySelector(`div[data-color="${color}"]`)
 
@@ -31,18 +36,20 @@ let Simon = function() {
     let ligTime = 1000
     let timTime = 1500
 
-    if (this.arrayGame.length > 20) {
+    if (arrayGame.length > 20) {
       ligTime = 500
       timTime = 750
 
-    } else if  (this.arrayGame.length > 10) {
+    } else if  (arrayGame.length > 10) {
       ligTime = 700
       timTime = 1000
     }
 
     setTimeout( () => {
-      this.lightColor(this.arrayGame[i], ligTime)
-      if (++i < this.arrayGame.length) {          // If i > 0, keep going
+      lightColor(arrayGame[i], ligTime)
+      this.playSound(arrayGame[i])
+
+      if (++i < arrayGame.length) {          // If i > 0, keep going
         this.playSequence(i);       // Call the loop again, and pass it the current value of i
       }
     }, timTime);
@@ -51,49 +58,59 @@ let Simon = function() {
 
   // Game turn function. Add a movement to sequence and play it
   this.gameTurn = function() {
-    this.gameMove()
+    gameMove()
     this.playSequence(0)
   }
 
   // Player's turn
   this.playerTurn = function(color) {
-    if (color == this.arrayGame[this.index] &&
-    this.index + 1 < this.arrayGame.length) {
-      this.index++
-      this.lightColor(color, 500)
+    if (color == arrayGame[index] &&
+    index + 1 < arrayGame.length) {
+      index++
+      lightColor(color, 500)
       return ("coincidence, keep guessing")
 
-    } else if (color == this.arrayGame[this.index] &&
-      this.index + 1 == this.arrayGame.length) {
-        this.index = 0
-        this.lightColor(color, 500)
+    } else if (color == arrayGame[index] &&
+      index + 1 == arrayGame.length) {
+        index = 0
+        lightColor(color, 500)
         console.log("Correct sequence, gameTurn() should be called")
         this.gameTurn()
         return
 
     } else {
-      this.index = 0
+      index = 0
       return console.log("no coincidence, game over. game should restart")
     }
   }
 
-
+  this.playSound = function(e) {
+    let id;
+    typeof e == "number" ? id = e : id = e.target.attributes["data-color"].value
+    const audio = document.querySelector(`#sound${id}`)
+    audio.play();
+  }
 
 }
 
 var simon = new Simon()
-simon.gameTurn()
 
 const options = document.querySelectorAll("#main div")
+const countDiv = document.querySelector("#count")
+const startBtn = document.querySelector("button")
+
+
+function start() {
+  simon.gameTurn()
+}
 
 function play(e) {
-  const id = e.target.attributes["data-color"].value
-  const audio = document.querySelector(`#sound${id}`)
-  simon.playerTurn(id)
-  audio.play();
+  simon.playerTurn(e.target.attributes["data-color"].value)
+  simon.playSound(e)
 }
 
 options.forEach(option => option.addEventListener("click", play))
+startBtn.addEventListener("click", start)
 
 /*
 TO DO:
