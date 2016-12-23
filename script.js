@@ -129,5 +129,6 @@ strictMode.addEventListener("click", strict)
 /*
 TO DO:
 * avoid play function or options.eventListener and playSequence() run simultaneously
-
+* deactivate start button when playing game
+* when guess patern or win or lose, etc, show the info on count window
 */

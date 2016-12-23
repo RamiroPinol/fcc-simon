@@ -1,14 +1,16 @@
 :root {
   --size: 250px;
-  --back: black;
+  --back: grey;
 }
 
 body {
-  background-color: grey;
+  background-color: #484A47;
+  background: radial-gradient(ellipse at center, #484a47 0%,#2f332d 100%) fixed;
 }
 
 #main {
-  background-color: black;
+  background-color: var(--back);
+  back
   height: var(--size);
   width: var(--size);
   border-radius: 10px;
@@ -27,29 +29,55 @@ body {
 }
 
 #center {
-  background-color: black;
+  background-color: var(--back);
   width: 120px;
   height: 120px;
   transform: translateY(-185px);
   margin: auto;
 }
 
-#buttons {
-  display: flex;
-  align-items: center;
-  align-content: space-around;
-
-}
-
 #count {
-  background-color: grey;
+  color: white;
   height: 60px;
 }
 
-button,
-input {
+#buttons {
+  height: 60px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+label, button {
   width: 50px;
-  height: 30px;
+  height: 35px;
+  color: white;
+  padding: 0;
+  margin: auto;
+  border-radius: .3em;
+  box-sizing: border-box;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: rgba(255, 255, 255, .4) 0 1px 0 inset, rgba(255, 255, 255, .3) 0 25px 30px -12px inset, rgba(0, 0, 0, .6) 0 1px 2px;
+  border: 1px solid rgba(0,0,0,.4);
+  text-shadow: 0 -1px 1px black, 0 -1px 2px black;
+}
+
+input {
+  visibility: hidden;
+  position: absolute;
+}
+
+input:checked + label {
+    background-color: rgba(0,0,0,.3);
+}
+
+label:active, button:active, input:checked + label {
+    box-shadow: 0 2px 6px black inset;
+}
+
+label:hover, label:active, button:hover, button:active {
+    background-color: rgba(0,0,0,.5);
 }
 
 #green {
