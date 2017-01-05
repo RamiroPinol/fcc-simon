@@ -1,5 +1,6 @@
 let Simon = function() {
 
+  let running = false
   let index = 0
   // sequence of colors
   // 1: green, 2: red, 3: yellow, 4: blue
@@ -35,7 +36,7 @@ let Simon = function() {
       }
     }
 
-    // Timeout to control amount of time color will be changed
+    // Change color and return to original with a timeout
     setColor(color)
     const timeout = setTimeout(setColor, time)
   }
@@ -43,6 +44,7 @@ let Simon = function() {
 
   // Plays the sequence using activateColor(). Recursive function with timeout
   function playSequence(i) {
+    running = true
     let lightTime = 1000
     let timeoutTime = 1500
 
@@ -57,10 +59,8 @@ let Simon = function() {
 
     setTimeout( () => {
       activateColor(arrayGame[i], lightTime)
-
-      if (++i < arrayGame.length) {          // If i > 0, keep going
-        playSequence(i);       // Call the loop again, and pass it the current value of i
-      }
+      // If i < sequence length call the loop again with current value of i
+      ++i < arrayGame.length ? playSequence(i) : running = false
     }, timeoutTime);
   }
 
@@ -79,24 +79,27 @@ let Simon = function() {
 
   // Player's turn
   this.playerTurn = function(color) {
-    if (color == arrayGame[index] &&
-    index + 1 < arrayGame.length) {
-      index++
-      activateColor(color, 500)
-      console.log("coincidence, keep guessing")
-      return
+    if (!running) {
 
-    } else if (color == arrayGame[index] &&
-      index + 1 == arrayGame.length) {
+      // Player makes a correct color answer
+      if (color == arrayGame[index] && index + 1 < arrayGame.length) {
+        index++
+        activateColor(color, 500)
+        console.log("coincidence, keep guessing")
+        return
+
+      // Player correctly answers last color and the whole sequence
+      } else if (color == arrayGame[index] && index + 1 == arrayGame.length) {
         index = 0
         activateColor(color, 500)
         console.log("Correct sequence!")
         this.gameTurn()
         return
 
-    } else {
-      // If not match, restart game if in strict mode or play sequence again if not
-      this.strict ? restart() : playSequence(0)
+      } else {
+        // If not match, restart game if in strict mode or play sequence again if not
+        this.strict ? restart() : playSequence(0)
+      }
     }
   }
 
@@ -117,7 +120,7 @@ function start() {
 }
 
 function play(e) {
-  simon.playerTurn(e.target.attributes["data-color"].value)
+  simon.playerTurn(e.target.dataset.color)
 }
 
 // Activate or deactivate Strict Mode
@@ -137,6 +140,5 @@ strictMode.addEventListener("click", strict)
 
 /*
 TO DO:
-* avoid play function or options.eventListener and playSequence() run simultaneously
 * when guess patern or win or lose, etc, show the info on count window
 */
