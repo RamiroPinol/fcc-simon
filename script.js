@@ -16,11 +16,17 @@ let Simon = function() {
     arrayGame.push(Math.floor(Math.random() * (5 - 1) + 1))
   }
 
-  // "iluminates" simon piece by changing color during time and returning to original
-  function lightColor(color, time) {
+
+  // Turn on simon piece by playing sound and changing color during time
+  function activateColor(color, time) {
     const colors = ["#29a529", "#a52929", "#a5a529", "#5656d8"]
     const item = document.querySelector(`div[data-color="${color}"]`)
 
+    // Select audio for button
+    const audio = document.querySelector(`#sound${color}`)
+    audio.play();
+
+    // Function to change color adding or removing the background-color property
     function setColor(color) {
       if (color) {
         return item.style.setProperty("background-color", colors[color - 1])
@@ -29,39 +35,40 @@ let Simon = function() {
       }
     }
 
+    // Timeout to control amount of time color will be changed
     setColor(color)
     const timeout = setTimeout(setColor, time)
   }
 
-  // Plays the sequence using lightColor(). Recursive function with timeout
-  this.playSequence = function(i) {
-    let ligTime = 1000
-    let timTime = 1500
+
+  // Plays the sequence using activateColor(). Recursive function with timeout
+  function playSequence(i) {
+    let lightTime = 1000
+    let timeoutTime = 1500
 
     if (arrayGame.length > 20) {
-      ligTime = 500
-      timTime = 750
+      lightTime = 500
+      timeoutTime = 750
 
     } else if  (arrayGame.length > 10) {
-      ligTime = 700
-      timTime = 1000
+      lightTime = 700
+      timeoutTime = 1000
     }
 
     setTimeout( () => {
-      lightColor(arrayGame[i], ligTime)
-      this.playSound(arrayGame[i])
+      activateColor(arrayGame[i], lightTime)
 
       if (++i < arrayGame.length) {          // If i > 0, keep going
-        this.playSequence(i);       // Call the loop again, and pass it the current value of i
+        playSequence(i);       // Call the loop again, and pass it the current value of i
       }
-    }, timTime);
+    }, timeoutTime);
   }
 
 
   // Game turn function. Add a movement to sequence and play it
   this.gameTurn = function() {
     gameMove()
-    this.playSequence(0)
+    playSequence(0)
   }
 
   function restart() {
@@ -75,29 +82,22 @@ let Simon = function() {
     if (color == arrayGame[index] &&
     index + 1 < arrayGame.length) {
       index++
-      lightColor(color, 500)
+      activateColor(color, 500)
       console.log("coincidence, keep guessing")
       return
 
     } else if (color == arrayGame[index] &&
       index + 1 == arrayGame.length) {
         index = 0
-        lightColor(color, 500)
+        activateColor(color, 500)
         console.log("Correct sequence!")
         this.gameTurn()
         return
 
     } else {
       // If not match, restart game if in strict mode or play sequence again if not
-      this.strict ? restart() : this.playSequence(0)
+      this.strict ? restart() : playSequence(0)
     }
-  }
-
-  this.playSound = function(e) {
-    let id;
-    typeof e == "number" ? id = e : id = e.target.attributes["data-color"].value
-    const audio = document.querySelector(`#sound${id}`)
-    audio.play();
   }
 
 }
@@ -118,11 +118,17 @@ function start() {
 
 function play(e) {
   simon.playerTurn(e.target.attributes["data-color"].value)
-  simon.playSound(e)
 }
 
+// Activate or deactivate Strict Mode
 function strict() {
   this.checked ? simon.strict = true : simon.strict = false
+}
+
+
+function showInfo(e) {
+  //countDiv.innerHTML = "Count: " + simon.showCount()
+  console.log(e);
 }
 
 options.forEach(option => option.addEventListener("click", play))
