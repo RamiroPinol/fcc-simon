@@ -7,11 +7,26 @@
   </head>
   <body>
     <div id="main">
-      <div id="green"></div>
-      <div id="red"></div>
-      <div id="blue"></div>
-      <div id="yellow"></div>
+      <div id="green" data-color="1"></div>
+      <div id="red" data-color="2"></div>
+      <div id="blue" data-color="4"></div>
+      <div id="yellow" data-color="3"></div>
     </div>
-    <div id="center"></div>
+    <div id="center">
+      <div id="count">COUNT: </div>
+      <div id="buttons">
+        <button type="button" name="start">START</button>
+        <input name="strict" value="strict" id="strict-mode" type="checkbox">
+        <label for="strict-mode">STRICT</label>
+      </div>
+    </div>
+
+    <audio id="sound1" src="https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"></audio>
+    <audio id="sound2" src="https://s3.amazonaws.com/freecodecamp/simonSound2.mp3"></audio>
+    <audio id="sound3" src="https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"></audio>
+    <audio id="sound4" src="https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"></audio>
+
+    </audio>
   </body>
+  <script src="script.js"></script>
 </html>

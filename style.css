@@ -1,14 +1,15 @@
 :root {
   --size: 250px;
-  --back: black;
+  --back: grey;
 }
 
-* {
-  background-color: grey;
+body {
+  background-color: #484A47;
+  background: radial-gradient(ellipse at center, #484a47 0%,#2f332d 100%) fixed;
 }
 
 #main {
-  background-color: black;
+  background-color: var(--back);
   height: var(--size);
   width: var(--size);
   border-radius: 10px;
@@ -26,26 +27,114 @@
   margin: 10px;
 }
 
+#center {
+  background-color: var(--back);
+  width: 120px;
+  height: 120px;
+  transform: translateY(-185px);
+  margin: auto;
+}
+
+#count {
+  color: white;
+  height: 60px;
+}
+
+#buttons {
+  height: 60px;
+  /*
+  display: flex;
+  justify-content: space-around;
+  */
+  display: inline-flex;
+  float: left;
+  padding-left: 10px;
+  align-items: center;
+}
+
+label, button {
+  width: 50px;
+  height: 35px;
+  color: white;
+  padding: 0;
+  margin: auto;
+  border-radius: .3em;
+  box-sizing: border-box;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: rgba(255, 255, 255, .4) 0 1px 0 inset, rgba(255, 255, 255, .3) 0 25px 30px -12px inset, rgba(0, 0, 0, .6) 0 1px 2px;
+  border: 1px solid rgba(0,0,0,.4);
+  text-shadow: 0 -1px 1px black, 0 -1px 2px black;
+  font-size: .8em;
+  line-height: 31px;
+  background-color: rgba(0,0,0,.3);
+}
+
+input {
+  visibility: hidden;
+  position: absolute;
+}
+
+button {
+  border-radius: .3em 0 0 .3em;
+}
+
+label {
+  border-left: 0;
+  border-radius: 0 .3em .3em 0;
+}
+
+input:checked + label {
+  background-color: rgba(0,0,0,.3);
+}
+
+label:active, button:active, input:checked + label {
+  box-shadow: 0 2px 6px black inset;
+}
+
+label:hover, label:active, button:hover, button:active {
+  background-color: rgba(0,0,0,.5);
+}
+
 #green {
-  background: -moz-linear-gradient(-45deg, green 0%, green 65%, var(--back) 65%, var(--back) 100%);
-  background: -webkit-linear-gradient(-45deg, green 0%,green 65%,var(--back) 65%,var(--back) 100%);
-  background: linear-gradient(135deg, green 0%,green 65%,var(--back) 65%,var(--back) 100%);
+  background-color: #3e593e;
 }
 
 #red {
-  background: -moz-linear-gradient(45deg, red 0%, red 65%, var(--back) 65%, var(--back) 100%);
-  background: -webkit-linear-gradient(45deg, red 0%,red 65%,var(--back) 65%,var(--back) 100%);
-  background: linear-gradient(-135deg, red 0%,red 65%,var(--back) 65%,var(--back) 100%);
-}
-
-#blue {
-  background: -moz-linear-gradient(-45deg, blue 0%, blue 65%, var(--back) 65%, var(--back) 100%);
-  background: -webkit-linear-gradient(-45deg, blue 0%,blue 65%,var(--back) 65%,var(--back) 100%);
-  background: linear-gradient(45deg, blue 0%,blue 65%,var(--back) 65%,var(--back) 100%);
+  background-color: #593e3e;
 }
 
 #yellow {
-  background: -moz-linear-gradient(135deg, yellow 0%, yellow 65%, var(--back) 65%, var(--back) 100%);
-  background: -webkit-linear-gradient(135deg, yellow 0%,yellow 65%,var(--back) 65%,var(--back) 100%);
-  background: linear-gradient(-45deg, yellow 0%,yellow 65%,var(--back) 65%,var(--back) 100%);
+  background-color: #59593e;
 }
+
+#blue {
+  background-color: #3e3e59;
+}
+
+/* background gradients */
+/*
+#green {
+  background: -moz-linear-gradient(-45deg, #335933 0%, #335933 65%, var(--back) 65%, var(--back) 100%);
+  background: -webkit-linear-gradient(-45deg, #335933 0%,#335933 65%,var(--back) 65%,var(--back) 100%);
+  background: linear-gradient(135deg, #335933 0%,#335933 65%,var(--back) 65%,var(--back) 100%);
+}
+
+#red {
+  background: -moz-linear-gradient(45deg, #593232 0%, #593232 65%, var(--back) 65%, var(--back) 100%);
+  background: -webkit-linear-gradient(45deg, #593232 0%,#593232 65%,var(--back) 65%,var(--back) 100%);
+  background: linear-gradient(-135deg, #593232 0%,#593232 65%,var(--back) 65%,var(--back) 100%);
+}
+
+#blue {
+  background: -moz-linear-gradient(-45deg, #323259 0%, #323259 65%, var(--back) 65%, var(--back) 100%);
+  background: -webkit-linear-gradient(-45deg, #323259 0%,#323259 65%,var(--back) 65%,var(--back) 100%);
+  background: linear-gradient(45deg, #323259 0%,#323259 65%,var(--back) 65%,var(--back) 100%);
+}
+
+#yellow {
+  background: -moz-linear-gradient(135deg, #595931 0%, #595931 65%, var(--back) 65%, var(--back) 100%);
+  background: -webkit-linear-gradient(135deg, #595931 0%,#595931 65%,var(--back) 65%,var(--back) 100%);
+  background: linear-gradient(-45deg, #595931 0%,#595931 65%,var(--back) 65%,var(--back) 100%);
+}
+*/
