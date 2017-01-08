@@ -1,4 +1,7 @@
-let Simon = function() {
+// Objct to recreate a Simon game.
+// The param div is the DIV where the object will display info strings
+// Param div should be string selector like "#info", ".class", etc
+let Simon = function(div) {
 
   let running = false
   let index = 0
@@ -7,10 +10,6 @@ let Simon = function() {
   let arrayGame = []
 
   this.strict = false
-
-  this.showCount = function() {
-    return arrayGame.length;
-  }
 
   // Push a random number [1,5) to sequence
   function gameMove() {
@@ -66,15 +65,22 @@ let Simon = function() {
 
 
   // Game turn function. Add a movement to sequence and play it
-  this.gameTurn = function() {
+  gameTurn = function() {
     gameMove()
     playSequence(0)
+  }
+
+  // Public method to start game.
+  this.start = function() {
+    if (arrayGame.length == 0) {
+      gameTurn()
+      showInfo("#count")
+    }
   }
 
   function restart() {
     arrayGame = []
     index = 0
-    console.log("Missmatch! GAME OVER. Restarting game...");
   }
 
   // Player's turn
@@ -85,21 +91,32 @@ let Simon = function() {
       if (color == arrayGame[index] && index + 1 < arrayGame.length) {
         index++
         activateColor(color, 500)
-        console.log("coincidence, keep guessing")
         return
 
       // Player correctly answers last color and the whole sequence
       } else if (color == arrayGame[index] && index + 1 == arrayGame.length) {
         index = 0
         activateColor(color, 500)
-        console.log("Correct sequence!")
-        this.gameTurn()
+        showInfo("#count", "CORRECT!")
+        gameTurn()
         return
 
       } else {
         // If not match, restart game if in strict mode or play sequence again if not
+        showInfo("#count", "WRONG")
         this.strict ? restart() : playSequence(0)
       }
+    }
+  }
+
+  // Method to display info strings on div. It displays default after 3s.
+  function showInfo(div, info = "COUNT: " + arrayGame.length, repeat = true) {
+    const infoDiv = document.querySelector(div)
+    infoDiv.innerHTML = info
+
+    // Recursive callback only if info string was provided
+    if (arguments.length > 1) {
+      const timeout = setTimeout( () => showInfo(div), 2500);
     }
   }
 
@@ -108,15 +125,12 @@ let Simon = function() {
 var simon = new Simon()
 
 const options = document.querySelectorAll("#main div")
-const countDiv = document.querySelector("#count")
 const startBtn = document.querySelector("button")
 const strictMode = document.querySelector("input")
 
 // Start a game. Checks for empty simon array (no game started) in order to run only once.
 function start() {
-  if (simon.showCount() == 0) {
-    simon.gameTurn()
-  }
+  simon.start()
 }
 
 function play(e) {
@@ -126,12 +140,6 @@ function play(e) {
 // Activate or deactivate Strict Mode
 function strict() {
   this.checked ? simon.strict = true : simon.strict = false
-}
-
-
-function showInfo(e) {
-  //countDiv.innerHTML = "Count: " + simon.showCount()
-  console.log(e);
 }
 
 options.forEach(option => option.addEventListener("click", play))
