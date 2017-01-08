@@ -6,6 +6,7 @@
 body {
   background-color: #484A47;
   background: radial-gradient(ellipse at center, #484a47 0%,#2f332d 100%) fixed;
+  text-align: center;
 }
 
 #main {
@@ -39,6 +40,9 @@ body {
 #count {
   color: white;
   height: 60px;
+  font-family: Aldrich, Arial,Helvetica,sans-serif;
+  font-size: 1.2em;
+  line-height: 60px;
 }
 
 #buttons {

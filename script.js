@@ -47,11 +47,11 @@ let Simon = function(div) {
     let lightTime = 1000
     let timeoutTime = 1500
 
-    if (arrayGame.length > 20) {
+    if (arrayGame.length > 14) {
       lightTime = 500
       timeoutTime = 750
 
-    } else if  (arrayGame.length > 10) {
+    } else if  (arrayGame.length > 7) {
       lightTime = 700
       timeoutTime = 1000
     }
@@ -93,6 +93,13 @@ let Simon = function(div) {
         activateColor(color, 500)
         return
 
+      // !!! Acá debería cortar cuando ganas el juego. No corta.
+      } else if (color == arrayGame[index] && index == 5) {
+        activateColor(color, 500)
+        showInfo("#count", "YOU WIN!")
+        restart()
+        return
+
       // Player correctly answers last color and the whole sequence
       } else if (color == arrayGame[index] && index + 1 == arrayGame.length) {
         index = 0
@@ -110,7 +117,7 @@ let Simon = function(div) {
   }
 
   // Method to display info strings on div. It displays default after 3s.
-  function showInfo(div, info = "COUNT: " + arrayGame.length, repeat = true) {
+  function showInfo(div, info = "LEVEL: " + arrayGame.length, repeat = true) {
     const infoDiv = document.querySelector(div)
     infoDiv.innerHTML = info
 
@@ -148,5 +155,7 @@ strictMode.addEventListener("click", strict)
 
 /*
 TO DO:
-* when guess patern or win or lose, etc, show the info on count window
+* display win if guess 20 steps
+* change start button to reset when playing
+* BUG cuando erras no funciona bien despues de mostrar de vuelta.
 */
