@@ -90,11 +90,11 @@ let Simon = function(div) {
       // Player makes a correct color answer
       if (color == arrayGame[index] && index + 1 < arrayGame.length) {
         index++
+        console.log(index);
         activateColor(color, 500)
         return
 
-      // !!! Acá debería cortar cuando ganas el juego. No corta.
-      } else if (color == arrayGame[index] && index == 5) {
+    } else if (color == arrayGame[index] && index == 19) {
         activateColor(color, 500)
         showInfo("#count", "YOU WIN!")
         restart()
@@ -111,6 +111,7 @@ let Simon = function(div) {
       } else {
         // If not match, restart game if in strict mode or play sequence again if not
         showInfo("#count", "WRONG")
+        index = 0
         this.strict ? restart() : playSequence(0)
       }
     }
@@ -155,7 +156,5 @@ strictMode.addEventListener("click", strict)
 
 /*
 TO DO:
-* display win if guess 20 steps
 * change start button to reset when playing
-* BUG cuando erras no funciona bien despues de mostrar de vuelta.
 */
