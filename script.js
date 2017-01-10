@@ -1,26 +1,36 @@
-let Simon = function() {
+// Object to recreate a Simon game.
+// The param div is the DIV where the object will display info strings
+// Param div should be string selector like "#info", ".class", etc
+let Simon = function(div) {
 
+  let running = false
   let index = 0
   // sequence of colors
   // 1: green, 2: red, 3: yellow, 4: blue
   let arrayGame = []
 
-  this.strict = false
-
-  this.showCount = function() {
-    return arrayGame.length;
+  this.level = function() {
+    return arrayGame.length
   }
+
+  this.strict = false
 
   // Push a random number [1,5) to sequence
   function gameMove() {
     arrayGame.push(Math.floor(Math.random() * (5 - 1) + 1))
   }
 
-  // "iluminates" simon piece by changing color during time and returning to original
-  function lightColor(color, time) {
+
+  // Turn on simon piece by playing sound and changing color during time
+  function activateColor(color, time) {
     const colors = ["#29a529", "#a52929", "#a5a529", "#5656d8"]
     const item = document.querySelector(`div[data-color="${color}"]`)
 
+    // Select audio for button
+    const audio = document.querySelector(`#sound${color}`)
+    audio.play();
+
+    // Function to change color adding or removing the background-color property
     function setColor(color) {
       if (color) {
         return item.style.setProperty("background-color", colors[color - 1])
@@ -29,75 +39,103 @@ let Simon = function() {
       }
     }
 
+    // Change color and return to original with a timeout
     setColor(color)
     const timeout = setTimeout(setColor, time)
   }
 
-  // Plays the sequence using lightColor(). Recursive function with timeout
-  this.playSequence = function(i) {
-    let ligTime = 1000
-    let timTime = 1500
 
-    if (arrayGame.length > 20) {
-      ligTime = 500
-      timTime = 750
+  // Plays the sequence using activateColor(). Recursive function with timeout
+  function playSequence(i) {
+    running = true
+    let lightTime = 1000
+    let timeoutTime = 1500
 
-    } else if  (arrayGame.length > 10) {
-      ligTime = 700
-      timTime = 1000
+    if (arrayGame.length > 14) {
+      lightTime = 500
+      timeoutTime = 750
+
+    } else if  (arrayGame.length > 7) {
+      lightTime = 700
+      timeoutTime = 1000
     }
 
     setTimeout( () => {
-      lightColor(arrayGame[i], ligTime)
-      this.playSound(arrayGame[i])
-
-      if (++i < arrayGame.length) {          // If i > 0, keep going
-        this.playSequence(i);       // Call the loop again, and pass it the current value of i
-      }
-    }, timTime);
+      activateColor(arrayGame[i], lightTime)
+      // If i < sequence length call the loop again with current value of i
+      ++i < arrayGame.length ? playSequence(i) : running = false
+    }, timeoutTime);
   }
 
 
   // Game turn function. Add a movement to sequence and play it
-  this.gameTurn = function() {
+  gameTurn = function() {
     gameMove()
-    this.playSequence(0)
+    playSequence(0)
+  }
+
+  // Public method to start a new game.
+  this.start = function() {
+    // Start first or after-win game
+    if (arrayGame.length == 0) {
+      gameTurn()
+      showInfo("#count")
+
+    // reset current game and start new one
+    } else {
+      restart()
+      gameTurn()
+      showInfo("#count")
+    }
   }
 
   function restart() {
     arrayGame = []
     index = 0
-    console.log("Missmatch! GAME OVER. Restarting game...");
   }
 
   // Player's turn
   this.playerTurn = function(color) {
-    if (color == arrayGame[index] &&
-    index + 1 < arrayGame.length) {
-      index++
-      lightColor(color, 500)
-      console.log("coincidence, keep guessing")
-      return
+    if (!running) {
 
-    } else if (color == arrayGame[index] &&
-      index + 1 == arrayGame.length) {
-        index = 0
-        lightColor(color, 500)
-        console.log("Correct sequence!")
-        this.gameTurn()
+      // Player makes a correct color answer
+      if (color == arrayGame[index] && index + 1 < arrayGame.length) {
+        index++
+        activateColor(color, 500)
         return
 
-    } else {
-      // If not match, restart game if in strict mode or play sequence again if not
-      this.strict ? restart() : this.playSequence(0)
+    } else if (color == arrayGame[index] && index == 19) {
+        activateColor(color, 500)
+        showInfo("#count", "YOU WIN!")
+        restart()
+        return
+
+      // Player correctly answers last color and the whole sequence
+      } else if (color == arrayGame[index] && index + 1 == arrayGame.length) {
+        index = 0
+        activateColor(color, 500)
+        showInfo("#count", "CORRECT!")
+        gameTurn()
+        return
+
+      } else {
+        // If not match, restart game if in strict mode or play sequence again if not
+        showInfo("#count", "WRONG")
+        index = 0
+        this.strict ? restart() : playSequence(0)
+      }
     }
   }
 
-  this.playSound = function(e) {
-    let id;
-    typeof e == "number" ? id = e : id = e.target.attributes["data-color"].value
-    const audio = document.querySelector(`#sound${id}`)
-    audio.play();
+  // Method to display info strings on div. It displays default after 3s.
+  function showInfo(div, info = "LEVEL: " + arrayGame.length, repeat = true) {
+    const infoDiv = document.querySelector(div)
+    infoDiv.innerHTML = info
+
+    // Recursive callback only if info string was provided
+    if (arguments.length > 1) {
+      const timeout = setTimeout( () => showInfo(div), 2500);
+    }
   }
 
 }
@@ -105,22 +143,24 @@ let Simon = function() {
 var simon = new Simon()
 
 const options = document.querySelectorAll("#main div")
-const countDiv = document.querySelector("#count")
 const startBtn = document.querySelector("button")
 const strictMode = document.querySelector("input")
 
-// Start a game. Checks for empty simon array (no game started) in order to run only once.
+// Changes button Start text to Reset when game running
+function changeButton() {
+  simon.level() > 0 ? startBtn.innerHTML = "RESET" : startBtn.innerHTML = "START"
+}
+
 function start() {
-  if (simon.showCount() == 0) {
-    simon.gameTurn()
-  }
+  simon.start()
+  changeButton()
 }
 
 function play(e) {
-  simon.playerTurn(e.target.attributes["data-color"].value)
-  simon.playSound(e)
+  simon.playerTurn(e.target.dataset.color)
 }
 
+// Activate or deactivate Strict Mode
 function strict() {
   this.checked ? simon.strict = true : simon.strict = false
 }
@@ -131,6 +171,4 @@ strictMode.addEventListener("click", strict)
 
 /*
 TO DO:
-* avoid play function or options.eventListener and playSequence() run simultaneously
-* when guess patern or win or lose, etc, show the info on count window
 */
