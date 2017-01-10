@@ -1,4 +1,4 @@
-// Objct to recreate a Simon game.
+// Object to recreate a Simon game.
 // The param div is the DIV where the object will display info strings
 // Param div should be string selector like "#info", ".class", etc
 let Simon = function(div) {
@@ -8,6 +8,10 @@ let Simon = function(div) {
   // sequence of colors
   // 1: green, 2: red, 3: yellow, 4: blue
   let arrayGame = []
+
+  this.level = function() {
+    return arrayGame.length
+  }
 
   this.strict = false
 
@@ -70,9 +74,16 @@ let Simon = function(div) {
     playSequence(0)
   }
 
-  // Public method to start game.
+  // Public method to start a new game.
   this.start = function() {
+    // Start first or after-win game
     if (arrayGame.length == 0) {
+      gameTurn()
+      showInfo("#count")
+
+    // reset current game and start new one
+    } else {
+      restart()
       gameTurn()
       showInfo("#count")
     }
@@ -90,7 +101,6 @@ let Simon = function(div) {
       // Player makes a correct color answer
       if (color == arrayGame[index] && index + 1 < arrayGame.length) {
         index++
-        console.log(index);
         activateColor(color, 500)
         return
 
@@ -136,9 +146,14 @@ const options = document.querySelectorAll("#main div")
 const startBtn = document.querySelector("button")
 const strictMode = document.querySelector("input")
 
-// Start a game. Checks for empty simon array (no game started) in order to run only once.
+// Changes button Start text to Reset when game running
+function changeButton() {
+  simon.level() > 0 ? startBtn.innerHTML = "RESET" : startBtn.innerHTML = "START"
+}
+
 function start() {
   simon.start()
+  changeButton()
 }
 
 function play(e) {
@@ -156,5 +171,4 @@ strictMode.addEventListener("click", strict)
 
 /*
 TO DO:
-* change start button to reset when playing
 */
