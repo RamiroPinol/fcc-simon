@@ -122,7 +122,7 @@ let Simon = function(div) {
         // If not match, restart game if in strict mode or play sequence again if not
         showInfo("#count", "WRONG")
         index = 0
-        this.strict ? restart() : playSequence(0)
+        this.strict ? setTimeout(() => this.start(), 2500) : playSequence(0)
       }
     }
   }
@@ -146,7 +146,7 @@ const options = document.querySelectorAll("#main div")
 const startBtn = document.querySelector("button")
 const strictMode = document.querySelector("#strict")
 
-// Changes button Start text to Reset when game running
+// Changes button "Start" text to "Reset" when game running
 function changeButton() {
   simon.level() > 0 ? startBtn.innerHTML = "RESET" : startBtn.innerHTML = "START"
 }
