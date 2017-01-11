@@ -8,18 +8,21 @@
     <link href='http://fonts.googleapis.com/css?family=Aldrich' rel='stylesheet'>
   </head>
   <body>
+
     <div id="main">
       <div id="green" data-color="1"></div>
       <div id="red" data-color="2"></div>
       <div id="blue" data-color="4"></div>
       <div id="yellow" data-color="3"></div>
     </div>
+
     <div id="center">
       <div id="count">LEVEL: 0</div>
-      <div id="buttons">
-        <button type="button" name="start">START</button>
-        <input name="strict" value="strict" id="strict-mode" type="checkbox">
-        <label for="strict-mode">STRICT</label>
+      <div class="container">
+        <button id="start">START</button>
+        <div class="outer"></div>
+        <button id="strict">STRICT</button>
+        <div class="outer" id="outer2"></div>
       </div>
     </div>
 
@@ -28,7 +31,8 @@
     <audio id="sound3" src="https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"></audio>
     <audio id="sound4" src="https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"></audio>
 
-    </audio>
+
+
   </body>
   <script src="script.js"></script>
 </html>

@@ -107,7 +107,7 @@ let Simon = function(div) {
     } else if (color == arrayGame[index] && index == 19) {
         activateColor(color, 500)
         showInfo("#count", "YOU WIN!")
-        restart()
+        setTimeout(() => this.start(), 2500)
         return
 
       // Player correctly answers last color and the whole sequence
@@ -144,7 +144,7 @@ var simon = new Simon()
 
 const options = document.querySelectorAll("#main div")
 const startBtn = document.querySelector("button")
-const strictMode = document.querySelector("input")
+const strictMode = document.querySelector("#strict")
 
 // Changes button Start text to Reset when game running
 function changeButton() {
@@ -160,9 +160,16 @@ function play(e) {
   simon.playerTurn(e.target.dataset.color)
 }
 
+// Add btnLighted class to simulate an active button
+function lightButton(button) {
+  button.classList.contains("btnLighted") ?
+    button.classList.remove("btnLighted") : button.classList.add("btnLighted")
+}
+
 // Activate or deactivate Strict Mode
 function strict() {
-  this.checked ? simon.strict = true : simon.strict = false
+  simon.strict ? simon.strict = false : simon.strict = true
+  lightButton(this)
 }
 
 options.forEach(option => option.addEventListener("click", play))
