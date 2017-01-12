@@ -22,8 +22,6 @@
  *  Strict button...........(Strict button style)
  *  Strict button class.....(Class for "on" effect)
  *
- * ANIMATIONS
- *
  * RESPONSIVE DECLARATIONS
  *
  */
@@ -34,8 +32,11 @@
 \*------------------------------------*/
 
 :root {
-  --size: 250px;
-  --back: #16232d;
+  --size: 250px;        /* Board's side size */
+  --back: #16232d;      /* Board color */
+  --btnsize: 105px;     /* Color button's side size */
+  --panelsize: 120px;   /* Central panel side size */
+  --paneldivs: 60px;    /* Central panel divs height and line-height */
 }
 
 body {
@@ -67,9 +68,9 @@ body {
 /* Simon's color buttons */
 #main > * {
   cursor: pointer;
-  height: 105px;
+  height: var(--btnsize);
   margin: 10px;
-  width: 105px;
+  width: var(--btnsize);
 }
 
 /* "Off"-state button colors */
@@ -118,10 +119,10 @@ body {
 /* Central panel */
 #center {
   background-color: var(--back);
-  height: 120px;
+  height: var(--panelsize);
   margin: auto;
   transform: translateY(-185px);
-  width: 120px;
+  width: var(--panelsize);
 }
 
 
@@ -130,8 +131,8 @@ body {
   color: white;
   font-family: Aldrich, Arial,Helvetica,sans-serif;
   font-size: 1.2em;
-  height: 60px;
-  line-height: 60px;
+  height: var(--paneldivs);
+  line-height: var(--paneldivs);
   text-align: center;
 }
 
@@ -139,9 +140,8 @@ body {
 /* Button's container */
 .container {
   display: inline-block;
-  height: 60px;
+  height: var(--paneldivs);
   margin-left: 8px;
-  width: 100%;
 }
 
 
@@ -185,7 +185,7 @@ button {
 
 button:active {
   background: #111a21;
-  border-color: #111a21
+  border-color: #111a21;
 }
 
 button:active + .outer {
@@ -208,4 +208,25 @@ button:active + .outer {
 .btnLighted {
   color: red;
   text-shadow: 0 0 5px red;
+}
+
+
+
+/*------------------------------------*\
+  #RESPONSIVE DECLARATIONS
+\*------------------------------------*/
+
+@media only screen and ( min-width: 550px ) {
+  :root {
+    --size: 350px;        /* Board's side size */
+    --btnsize: 147px;     /* Color button's side size */
+    --panelsize: 170px;
+    --paneldivs: 85px;
+  }
+  #main > * { margin: 14px; }
+  #center { transform: translateY(-263px); }
+  #count {
+    font-size: 1.8em;
+  }
+  .container { margin-left: 32px; }
 }
