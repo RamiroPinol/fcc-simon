@@ -175,7 +175,3 @@ function strict() {
 options.forEach(option => option.addEventListener("click", play))
 startBtn.addEventListener("click", start)
 strictMode.addEventListener("click", strict)
-
-/*
-TO DO:
-*/

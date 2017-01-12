@@ -1,3 +1,38 @@
+/*
+ * CONTENTS:
+ *
+ * GLOBALS AND BODY
+ *
+ * MAIN DIV AND COLOR BUTTONS
+ *  Simon body..............(Main DIV of Simon).
+ *  Colors buttons..........(Color buttons globals).
+ *  OFF button colors.......(Colors for "off" buttons).
+ *  ON button colors........(Colors for "on" buttons).
+ *
+ * CENTRAL PANEL
+ *  Central panel...........(Simon's central panel).
+ *  Info display............(Top-half of central panel).
+ *  Buttons container.......(Bottom-half of central panel).
+ *
+ * CENTRAL BUTTONS
+ *  Button's outer space....(Black space behind buttons).
+ *  Button's style..........(Button's main style).
+ *  Button:active...........(Button's active style)
+ *  Start button ...........(Start button style)
+ *  Strict button...........(Strict button style)
+ *  Strict button class.....(Class for "on" effect)
+ *
+ * ANIMATIONS
+ *
+ * RESPONSIVE DECLARATIONS
+ *
+ */
+
+
+/*------------------------------------*\
+  #GLOBALS AND BODY
+\*------------------------------------*/
+
 :root {
   --size: 250px;
   --back: #16232d;
@@ -8,43 +43,36 @@ body {
   /*background: radial-gradient(ellipse at center, #484a47 0%,#2f332d 100%) fixed;*/
 }
 
+
+
+/*------------------------------------*\
+  #MAIN DIV AND COLORS BUTTONS
+\*------------------------------------*/
+
+/* Simon body */
 #main {
   background-color: var(--back);
-  height: var(--size);
-  width: var(--size);
   border-radius: 10px;
-  margin: auto;
-  margin-top: 100px;
   display: flex;
   flex-wrap: wrap;
+  height: var(--size);
   justify-content: space-around;
+  margin: auto;
+  margin-top: 100px;
   transform: rotate(45deg);
+  width: var(--size);
 }
 
+
+/* Simon's color buttons */
 #main > * {
-  width: 105px;
+  cursor: pointer;
   height: 105px;
   margin: 10px;
-  cursor: pointer;
+  width: 105px;
 }
 
-#center {
-  background-color: var(--back);
-  width: 120px;
-  height: 120px;
-  transform: translateY(-185px);
-  margin: auto;
-}
-
-#count {
-  color: white;
-  height: 60px;
-  font-family: Aldrich, Arial,Helvetica,sans-serif;
-  font-size: 1.2em;
-  line-height: 60px;
-  text-align: center;
-}
-
+/* "Off"-state button colors */
 #green {
   background-color: #3e593e;
 }
@@ -61,56 +89,101 @@ body {
   background-color: #3e3e59;
 }
 
+/* "On"-state/active button colors */
+#green:active {
+  background-color: #29a529;
+  transform: scale(.98);
+}
+
+#red:active {
+  background-color: #a52929;
+  transform: scale(.98);
+}
+
+#yellow:active {
+  background-color: #a5a529;
+  transform: scale(.98);
+}
+
+#blue:active {
+  background-color: #5656d8;
+  transform: scale(.98);
+}
+
+
+/*------------------------------------*\
+  #CENTRAL PANEL
+\*------------------------------------*/
+
+/* Central panel */
+#center {
+  background-color: var(--back);
+  height: 120px;
+  margin: auto;
+  transform: translateY(-185px);
+  width: 120px;
+}
+
+
+/* Info display */
+#count {
+  color: white;
+  font-family: Aldrich, Arial,Helvetica,sans-serif;
+  font-size: 1.2em;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+}
+
+
+/* Button's container */
 .container {
   display: inline-block;
   height: 60px;
-  width: 100%;
   margin-left: 8px;
+  width: 100%;
 }
 
+
+
+/*------------------------------------*\
+  #CENTRAL BUTTONS
+\*------------------------------------*/
+
+/* Button's outer space */
 .outer {
-  position: absolute;
-  z-index: 0;
-  width: 54px;
-  height: 34px;
   background-color: black;
-  border-radius: 4px;
   border-bottom: 1px solid #16232d;
+  border-radius: 4px;
+  height: 34px;
+  position: absolute;
+  width: 54px;
+  z-index: 0;
 }
 
 #outer2 {
   transform: translate(51px, 0px);
 }
 
+/* Button's style */
 button {
-  position: absolute;
-  z-index: 1;
-  transform: translate(2px, 1px);
-  border: 1px solid #223543;
-  margin-top: 1px;
-  height: 30px;
-  width: 50px;
-  border-top-color: #3e4f5b;
   background: #223543;
   background: -moz-linear-gradient(top, #223543 0%, #1c2b36 100%);
   background: -webkit-linear-gradient(top, #223543 0%, #1c2b36 100%);
   background: linear-gradient(to bottom, #223543 0%, #1c2b36 100%);
+  border: 1px solid #223543;
+  border-top-color: #3e4f5b;
   color: #669cc3;
   font-size: .75em;
-}
-
-#start {
-  border-radius: 4px 0 0 4px;
-}
-
-#strict {
-  transform: translate(53px, 1px);
-  border-left: 0;
-  border-radius: 0 4px 4px 0;
+  height: 30px;
+  margin-top: 1px;
+  position: absolute;
+  transform: translate(2px, 1px);
+  width: 50px;
+  z-index: 1;
 }
 
 button:active {
-  border-top-color: #223543;
   background: #111a21;
   border-color: #111a21
 }
@@ -119,6 +192,19 @@ button:active + .outer {
   border-bottom-color: #3e4f5b;
 }
 
+/* Start button */
+#start {
+  border-radius: 4px 0 0 4px;
+}
+
+/* Strict mode button */
+#strict {
+  border-left: 0;
+  border-radius: 0 4px 4px 0;
+  transform: translate(53px, 1px);
+}
+
+/* Class for Strict mode button */
 .btnLighted {
   color: red;
   text-shadow: 0 0 5px red;
