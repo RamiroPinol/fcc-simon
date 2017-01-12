@@ -21,27 +21,34 @@ let Simon = function(div) {
   }
 
 
-  // Turn on simon piece by playing sound and changing color during time
-  function activateColor(color, time) {
-    const colors = ["#29a529", "#a52929", "#a5a529", "#5656d8"]
-    const item = document.querySelector(`div[data-color="${color}"]`)
-
-    // Select audio for button
+  // Play sound for respective color (1: green, 2: red, 3: yellow, 4: blue)
+  function playSound(color) {
     const audio = document.querySelector(`#sound${color}`)
     audio.play();
+  }
 
-    // Function to change color adding or removing the background-color property
-    function setColor(color) {
-      if (color) {
-        return item.style.setProperty("background-color", colors[color - 1])
-      } else {
-        item.style.removeProperty("background-color")
-      }
-    }
+
+  // Function to change color adding or removing the "active" CSS class
+  function changeColor(color) {
+
+    // Select corresponding color button depending on color number
+    const button = document.querySelector(`div[data-color="${color}"]`)
+
+    // If button has active class, remove it, otherwise add it.
+    button.classList.contains(`active${color}`) ?
+      button.classList.remove(`active${color}`) :
+      button.classList.add(`active${color}`)
+  }
+
+
+  // Turn on simon piece by playing sound and changing color during time
+  function activateColor(color, time) {
+
+    playSound(color)
 
     // Change color and return to original with a timeout
-    setColor(color)
-    const timeout = setTimeout(setColor, time)
+    changeColor(color)
+    const timeout = setTimeout(() => changeColor(color), time)
   }
 
 
@@ -96,24 +103,27 @@ let Simon = function(div) {
 
   // Player's turn
   this.playerTurn = function(color) {
+    const LIGHT_TIME = 500
+    const DISPLAY_TIME = 2500
     if (!running) {
 
       // Player makes a correct color answer
       if (color == arrayGame[index] && index + 1 < arrayGame.length) {
         index++
-        activateColor(color, 500)
+        activateColor(color, LIGHT_TIME)
         return
 
-    } else if (color == arrayGame[index] && index == 19) {
-        activateColor(color, 500)
+      // When player makes final correct answer at level 20 (index 19), wins game.
+      } else if (color == arrayGame[index] && index == 19) {
+        activateColor(color, LIGHT_TIME)
         showInfo("#count", "YOU WIN!")
-        setTimeout(() => this.start(), 2500)
+        setTimeout(() => this.start(), DISPLAY_TIME)
         return
 
       // Player correctly answers last color and the whole sequence
       } else if (color == arrayGame[index] && index + 1 == arrayGame.length) {
         index = 0
-        activateColor(color, 500)
+        activateColor(color, LIGHT_TIME)
         showInfo("#count", "CORRECT!")
         gameTurn()
         return
@@ -122,12 +132,12 @@ let Simon = function(div) {
         // If not match, restart game if in strict mode or play sequence again if not
         showInfo("#count", "WRONG")
         index = 0
-        this.strict ? setTimeout(() => this.start(), 2500) : playSequence(0)
+        this.strict ? setTimeout(() => this.start(), DISPLAY_TIME) : playSequence(0)
       }
     }
   }
 
-  // Method to display info strings on div. It displays default after 3s.
+  // Method to display info strings on div. It displays default after 2.5s.
   function showInfo(div, info = "LEVEL: " + arrayGame.length, repeat = true) {
     const infoDiv = document.querySelector(div)
     infoDiv.innerHTML = info

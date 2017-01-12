@@ -74,42 +74,43 @@ body {
 }
 
 /* "Off"-state button colors */
-#green {
+.green {
   background-color: #3e593e;
 }
 
-#red {
+.red {
   background-color: #593e3e;
 }
 
-#yellow {
+.yellow {
   background-color: #59593e;
 }
 
-#blue {
+.blue {
   background-color: #3e3e59;
 }
 
 /* "On"-state/active button colors */
-#green:active {
+.active1 {
   background-color: #29a529;
   transform: scale(.98);
 }
 
-#red:active {
+.active2 {
   background-color: #a52929;
   transform: scale(.98);
 }
 
-#yellow:active {
+.active3{
   background-color: #a5a529;
   transform: scale(.98);
 }
 
-#blue:active {
+.active4 {
   background-color: #5656d8;
   transform: scale(.98);
 }
+
 
 
 /*------------------------------------*\
